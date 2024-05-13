@@ -1,0 +1,90 @@
+---
+title: <span style="color:darkred">**Modelo Predictivo:**ENTREGABLE:2-Casos de Anemia por Edades entre los años 2010 - 2020 en la Region de Cusco*
+ 
+author: "BETO-DAVID-SALAZAR-CCOTOHUANCA"
+date: "2024-05-13"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    theme: united
+    highlight: tango
+    code_download: true
+  toc: default
+---
+<img src="https://e1.pxfuel.com/desktop-wallpaper/215/476/desktop-wallpaper-1920x1080-dota-2-children-classroom-sven-invoker-rubick-akasha-mirana-backgrounds.jpg">  
+**foto-academia-DK**
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+## PASOS 1: IMPORTAR EL ARCHIVO csv
+
+```{r}
+
+library(readr)
+DATOS <- read_csv("DATOS.csv")
+View(DATOS)
+```
+
+## LIMPIAR DTAOS
+
+```{r}
+
+DATOS <- na.omit(DATOS)
+```
+
+## VISUALISAR resumen estadístico-la estructura
+
+```{r}
+
+str(DATOS)
+summary(DATOS)
+```
+
+## Convertir variables categóricas en factores
+
+```{r}
+
+DATOS$GENERO <- as.factor(DATOS$GENERO)
+
+DATOS$Modalidad <- as.factor(DATOS$Modalidad)
+
+DATOS$Especialidad <- factor(DATOS$Especialidad)
+```
+
+## ASER LA REGRESION LINEAL
+
+```{r}
+
+regresion1 <- lm(Ciclo_Relativo ~ ANO_MATRICULA + GENERO + Especialidad, data = DATOS)
+
+summary(regresion1)
+```
+## 5 Crear un nuevo conjunto de datos para el año 2023
+
+```{r}
+
+datos_nuevos <- data.frame(
+  ANO_MATRICULA = rep(2023, nrow(DATOS)),  # Suponiendo que deseas predecir para el año 2023
+  GENERO = factor("MASCULINO", levels = levels(DATOS$GENERO)),  # Puedes cambiar a "FEMENINO" si prefieres
+  Especialidad = factor("ARQUITECTURA", levels = levels(DATOS$Especialidad))  # Cambia según tus datos
+)
+
+```
+## Realizar la predicción
+
+```{r}
+
+prediccion_2023 <- predict(regresion1, newdata = datos_nuevos)
+
+```
+
+## Imprimir la predicción
+
+```{r}
+
+print(prediccion_2023)
+```
+
+summa
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
